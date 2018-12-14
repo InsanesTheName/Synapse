@@ -170,6 +170,27 @@ class TheHiveConnector:
             self.logger.error('File observable upload failed')
             raise ValueError(json.dumps(response.json(), indent=4, sort_keys=True))
 
+    def addIPObservable(self, esCaseId, ip, comment):
+        self.logger.info('%s.addIPObservable starts', __name__)
+
+        observable = CaseObservable(dataType='ip',
+            data=ip,
+            tlp=2,
+            ioc=False,
+            tags=['Synapse'],
+            message=comment
+        )
+
+        response = self.theHiveApi.create_case_observable(
+            esCaseId, observable)
+
+        if response.status_code == 201:
+            esObservableId = response.json()['id']
+            return esObservableId
+        else:
+            self.logger.error('Failed to create observable from IP')
+            raise ValueError(json.dumps(response.json(), indent=4, sort_keys=True))
+            
     def craftAlert(self, title, description, severity, date, tags, tlp, status, type, source,
         sourceRef, artifacts, caseTemplate):
         self.logger.info('%s.craftAlert starts', __name__)

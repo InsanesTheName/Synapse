@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf8 -*-
 
-import os, sys
+import os, sys, re
 import logging
 current_dir = os.path.dirname(os.path.abspath(__file__))
 app_dir = current_dir + '/..'
 sys.path.insert(0, current_dir)
+
+IP_EX = r'(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])'
 
 from common.common import getConf
 from objects.EwsConnector import EwsConnector
@@ -75,6 +77,14 @@ def connectEws():
             fullBody = getEmailBody(msg)
             taskLog = theHiveConnector.craftTaskLog(fullBody)
             createdTaskLogId = theHiveConnector.addTaskLog(commTaskId, taskLog)
+
+            serverIPs = re.findall(IP_EX, fullBody)
+            for ip in serverIPs:
+                logger.info("IP address found in email: " + ip)
+                try:
+                    theHiveConnector.addIPObservable(esCaseId, ip, '')
+                except ValueError as ex:
+                    logger.info(ex)
 
             readMsg = ewsConnector.markAsRead(msg)
 

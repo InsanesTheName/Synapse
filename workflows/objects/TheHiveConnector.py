@@ -190,7 +190,16 @@ class TheHiveConnector:
         else:
             self.logger.error('Failed to create observable from IP')
             raise ValueError(json.dumps(response.json(), indent=4, sort_keys=True))
-   
+ 
+    def scanIP(self, ipObservableID):
+        self.logger.info('%s.scanIP starts', __name__)
+        response = self.theHiveApi.run_analyzer(
+            "CORTEX01", ipObservableID, "SecurityCenter_1_0")
+        if response.status_code == 201:
+            return response.json()
+        else:
+            raise ValueError(json.dumps(response.json(), indent=4, sort_keys=True))
+
     def craftAlert(self, title, description, severity, date, tags, tlp, status, type, source,
         sourceRef, artifacts, caseTemplate):
         self.logger.info('%s.craftAlert starts', __name__)

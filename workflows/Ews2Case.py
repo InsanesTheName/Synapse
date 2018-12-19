@@ -82,7 +82,8 @@ def connectEws():
             for ip in serverIPs:
                 logger.info("IP address found in email: " + ip)
                 try:
-                    theHiveConnector.addIPObservable(esCaseId, ip, '')
+                    r_id = theHiveConnector.addIPObservable(esCaseId, ip, '')
+                    result = theHiveConnector.scanIP(r_id)
                 except ValueError as ex:
                     logger.info(ex)
 

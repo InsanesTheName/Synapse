@@ -27,6 +27,7 @@ def connectEws():
         ewsConnector = EwsConnector(cfg)
         folder_name = cfg.get('EWS', 'folder_name')
         unread = ewsConnector.scan(folder_name)
+        logger.info("Found " + str(len(unread)) + " unreads mails")
 
         theHiveConnector = TheHiveConnector(cfg)
 

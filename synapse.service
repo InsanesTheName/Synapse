@@ -1,10 +1,10 @@
 [Unit]
 Description=Synapse
-Requires=network-online.target thehive.service
 After=network-online.target thehive.service
+Requires=network-online.target thehive.service
 BindsTo=thehive.service
-Wants=synapsed.service
 Before=synapsed.service
+Wants=synapsed.service
 
 [Service]
 WorkingDirectory=/opt/synapse

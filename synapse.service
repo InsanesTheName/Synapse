@@ -1,0 +1,23 @@
+[Unit]
+Description=Synapse
+Requires=network-online.target thehive.service
+After=network-online.target thehive.service
+BindsTo=thehive.service
+Wants=synapsed.service
+Before=synapsed.service
+
+[Service]
+WorkingDirectory=/opt/synapse
+
+User=synapse
+Group=synapse
+
+ExecStart=/usr/bin/env python3 /opt/synapse/app.py
+
+Type=simple
+
+Restart=always
+RestartSec=1
+
+[Install]
+WantedBy=multi-user.target

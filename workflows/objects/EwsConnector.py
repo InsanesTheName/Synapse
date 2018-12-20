@@ -13,7 +13,7 @@ class EwsConnector:
         self.account = self.getAccount()
 
     def getAccount(self):
-        self.logger.info('%s. getAccount starts', __name__)
+        self.logger.info('%s.getAccount starts', __name__)
         try:
             username = self.cfg.get('EWS', 'username')
             password = self.cfg.get('EWS', 'password')
